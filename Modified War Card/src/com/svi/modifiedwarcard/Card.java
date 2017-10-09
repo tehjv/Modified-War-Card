@@ -179,10 +179,16 @@ public class Card {
 		return b + "-" + a;
 	}
 
+	/**
+	 * Gets card's value for comparison purposes.
+	 */
 	public int getValue() {
 		return value;
 	}
-
+	
+	/**
+	 * Sets card's value which only used when creating card object.
+	 */
 	public void setValue(int value) {
 		this.value = value;
 	}

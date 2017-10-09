@@ -3,6 +3,10 @@ package com.svi.modifiedwarcard;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class handles the War Card game including initial setup, processing
+ * rounds and determining winners.
+ */
 public class Game {
 	// Fields
 	private Deck deck = new Deck();
@@ -10,11 +14,17 @@ public class Game {
 	private int endFlag;
 	private int roundNumber;
 
-	// Constructor
+	/**
+	 * Creates an instance of Game class.
+	 */
 	public Game() {
 
 	}
 
+	/**
+	 * Starts game and takes user input for number of decks, players, cuts,
+	 * shuffles, rounds.
+	 */
 	public void startGame() {
 		// welcome message
 		System.out.println("*****WELCOME TO WAR CARD*****\n\n");
@@ -97,6 +107,13 @@ public class Game {
 
 	}
 
+	/**
+	 * Runs the game with the inputed values for numbers of players, cuts,
+	 * shuffles and rounds. Enacts creating players, displaying initial deck,
+	 * shuffling deck, displaying shuffled deck, dealing cards to players,
+	 * displaying cards before the rounds starts, processing rounds, looping
+	 * through rounds processing until an end scenario is reached.
+	 */
 	public void runGame(int playerNumber, int numberOfCuts, int numberOfShuffle, int maxRound) {
 		// set/create Players
 		setPlayers(playerNumber);
@@ -263,7 +280,7 @@ public class Game {
 	}
 
 	/**
-	 * Returns message at the end of the game.
+	 * Returns message at the end of the game. (Reached max round or only 1 player with cards)
 	 */
 	public String endGameMessage() {
 		int mostCards = 0;
@@ -282,7 +299,10 @@ public class Game {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Returns an ArrayList of indexes whose card value sum is equal to highest card value sum.
+	 */
 	public ArrayList<Integer> compareToWinningValue(ArrayList<ArrayList<Card>> table, int winningValue) {
 		ArrayList<Integer> winners = new ArrayList<Integer>();
 		for (int i = 0; i < table.size(); i++) {
@@ -300,7 +320,7 @@ public class Game {
 	}
 
 	/**
-	 * Used to compare 2 cards.
+	 * Used to compare 2 card stacks Returns the card stack with bigger value sum.
 	 */
 	public ArrayList<Card> compareCards(ArrayList<Card> cardSet1, ArrayList<Card> cardSet2) {
 		int cardSet1Value = 0;
@@ -391,7 +411,9 @@ public class Game {
 		}
 
 	}
-
+	/**
+	 * Sets Players for the game.
+	 */
 	public void setPlayers(int playerNumber) {
 		for (int x = 1; x <= playerNumber; x++) {
 			addPlayer(new Player(x));
@@ -404,35 +426,58 @@ public class Game {
 	public void addPlayer(Player player) {
 		players.add(player);
 	}
-
+	/**
+	 * Returns game's deck.
+	 */
 	public Deck getDeck() {
 		return deck;
 	}
-
+	
+	/**
+	 * Sets game deck.
+	 */
 	public void setDeck(Deck deck) {
 		this.deck = deck;
 	}
-
+	
+	/**
+	 * Gets list of players.
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-
+	
+	/**
+	 * Sets player list.
+	 */
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
 	}
-
+	
+	/**
+	 * Gets endFlag current value. Game ends if flag is set to 1.
+	 */
 	public int getEndFlag() {
 		return endFlag;
 	}
-
+	
+	/**
+	 * Sets endFlag current value. Game ends if flag is set to 1.
+	 */
 	public void setEndFlag(int endFlag) {
 		this.endFlag = endFlag;
 	}
-
+	
+	/**
+	 * Gets current round number.
+	 */
 	public int getRoundNumber() {
 		return roundNumber;
 	}
-
+	
+	/**
+	 * Sets current round number.
+	 */
 	public void setRoundNumber(int roundNumber) {
 		this.roundNumber = roundNumber;
 	}
