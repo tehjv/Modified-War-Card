@@ -34,7 +34,7 @@ public class Game {
 		}
 
 		// adding decks to game
-		for (int i = 0; i < deckNumber; i++) {
+		for (int i = 1; i < deckNumber; i++) {
 			getDeck().addAll(new Deck());
 		}
 
@@ -43,7 +43,7 @@ public class Game {
 		int playerNumber = 0;
 		userInput = sc.nextDouble();
 		while (playerNumber < 2) {
-			if (userInput > Integer.MAX_VALUE || userInput < 2 || userInput > deck.size() / 2) {
+			if (userInput > Integer.MAX_VALUE || userInput < 2 || userInput > (deck.size() / 2)) {
 				System.out.println(
 						"Please only enter an even value greater than 0 up to half the number of cards to be used");
 				userInput = sc.nextDouble();
@@ -123,6 +123,10 @@ public class Game {
 		while (endFlag != 1) {
 
 			beginRound();
+			// end if tie with winners exhausting all cards they have
+			if (getEndFlag() == 1) {
+				break;
+			}
 			System.out.println("\nPLAYER CARDS AFTER ROUND " + getRoundNumber());
 			System.out.println("-----------------------------------------");
 			displayPlayerCards();
@@ -130,6 +134,8 @@ public class Game {
 			// checking if only 1 player has cards
 			if (getRoundNumber() == maxRound) {
 				setEndFlag(1);
+				System.out.println(endGameMessage());
+				break;
 			} else {
 
 				setEndFlag(players.size());
@@ -138,9 +144,30 @@ public class Game {
 						setEndFlag(getEndFlag() - 1);
 					}
 				}
+				if (getEndFlag() == 1) {
+					System.out.println(endGameMessage());
+					break;
+				}
 			}
 		}
-		System.out.println(endGameMessage());
+
+	}
+
+	/**
+	 * Returns message at the end of the game for ties in a single round.
+	 */
+	public static void endGameMessage2(ArrayList<Integer> competitors, ArrayList<Integer> winners,
+			ArrayList<Player> players) {
+		// declare winner
+		System.out.println("\n-----------------------------------------");
+		for (int i = 0; i < winners.size(); i++) {
+			if (i == winners.size() - 1) {
+				System.out.print("PLAYER" + players.get(competitors.get(winners.get(i))).getID() + " ");
+			} else {
+				System.out.print("PLAYER" + players.get(competitors.get(winners.get(i))).getID() + " & ");
+			}
+		}
+		System.out.print("HAVE WON THE GAME!");
 	}
 
 	/**
@@ -191,9 +218,6 @@ public class Game {
 				}
 			}
 
-			System.out.println("Table: " + table.toString());
-			displayPlayerCards();
-
 			// re-do, find winning value
 			winner = table.get(0);
 			winningValue = 0;
@@ -208,8 +232,6 @@ public class Game {
 			// winners
 			winners = compareToWinningValue(table, winningValue);
 
-			System.out.println(winners.toString());
-
 			// checking for players with no more cards
 			for (int i = 0; i < winners.size(); i++) {
 				if (players.get(competitors.get(winners.get(i))).size() == 0) {
@@ -217,11 +239,12 @@ public class Game {
 				}
 			}
 
-			System.out.println(winnersWithCards);
-
 			// If all cards are exhausted between winning players, the game ends
 			if (winnersWithCards == 0) {
 				setEndFlag(1);
+
+				endGameMessage2(competitors, winners, players);
+				break;
 			}
 		}
 
@@ -237,25 +260,6 @@ public class Game {
 
 		// set round number
 		setRoundNumber(getRoundNumber() + 1);
-	}
-
-	/**
-	 * Returns message at the end of the game.
-	 */
-	public static void endGameMessage(ArrayList<Player> players, ArrayList<Integer> competitors,
-			ArrayList<Integer> winners) {
-
-		// declare winner
-		System.out.println("\n-----------------------------------------");
-		for (int i = 0; i < winners.size(); i++) {
-			if (i == winners.size() - 1) {
-				System.out.print("PLAYER" + players.get(competitors.get(winners.get(i))).getID() + " ");
-			} else {
-				System.out.print("PLAYER" + players.get(competitors.get(winners.get(i))).getID() + " & ");
-			}
-		}
-		System.out.print("HAVE WON THE GAME!");
-
 	}
 
 	/**
